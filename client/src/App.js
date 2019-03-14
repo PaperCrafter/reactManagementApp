@@ -8,6 +8,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TabelCell from '@material-ui/core/TableCell';
 import Paper from '@material-ui/core/Paper';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import {withStyles} from '@material-ui/core/styles';
 
 const styles = theme=>({
@@ -18,37 +19,38 @@ const styles = theme=>({
   },
   table:{
     minwidth:1080
+  },
+  progress:{
+    margin:theme.spacing.unit*2
   }
 })
 
-const customers=[{
-  'id':1,
-  'image':logo,
-  'name':'홍길동',
-  'birthday':'961222',
-  'gender':'남자',
-  'job':'대학생',
-},
-{
-  'id':2,
-  'image':logo,
-  'name':'paper',
-  'birthday':'961222',
-  'gender':'남자',
-  'job':'대학생',
-},
-{
-  'id':3,
-  'image':logo,
-  'name':'js',
-  'birthday':'961222',
-  'gender':'남자',
-  'job':'대학생',
-}
-]
-
-
 class App extends Component {
+  state = {
+    customers:"",
+    completed:0
+  }
+
+  componentDidMount(){
+    this.timer = setInterval(this.progress, 20);
+    
+    this.callApi()
+    .then(res=>this.setState({customers:res}))
+    .catch(err => console.log(err));
+    
+  }
+
+  callApi = async() =>{
+    const response = await fetch('/api/customers');
+    const body = await response.json();
+    return body;
+  }
+
+  progress = ()=>{ 
+      const {completed} = this.state;
+      this.setState({completed:completed>=100?0: completed+1});
+  }
+
   render() {
     const {classes} = this.props;
     return (
@@ -67,7 +69,7 @@ class App extends Component {
 
         <TableBody>
         {
-          customers.map(e => {
+          this.state.customers ? this.state.customers.map(e => {
             return(
               <Customer
                 key={e.id}
@@ -79,7 +81,11 @@ class App extends Component {
                 job={e.job}
               />
             );
-          })
+          }) : <TableRow>
+                  <TabelCell colspan = "6" align = "center">
+                    <CircularProgress className={classes.progress} variant="determinate" value ={this.state.completed}/>
+                  </TabelCell>
+                </TableRow>
         }
         </TableBody>
         </Table>

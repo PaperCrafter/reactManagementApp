@@ -1,25 +1,25 @@
 {
-  "name": "management",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
-    "react-scripts": "2.1.8"
-  },
+  "name": "managementapp",
+  "version": "0.0.1",
+  "description": "this app is management webapp following tutorial",
+  "main": "./client/src/App.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "client":"cd client && yarn start",
+    "server":"nodemon server.js",
+    "dev":"concurrently --kill-others-on-fail\"yarn server\"\"yarn client\""
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PaperCrafter/reactManagementApp.git"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "author": "papercrafter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PaperCrafter/reactManagementApp/issues"
+  },
+  "homepage": "https://github.com/PaperCrafter/reactManagementApp#readme",
+  "dependencies": {
+    "concurrently":"^4.0.1",
+    "express": "^4.16.4"
+  }
 }
